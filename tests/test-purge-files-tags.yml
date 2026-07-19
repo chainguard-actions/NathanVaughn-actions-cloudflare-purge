@@ -1,0 +1,23 @@
+name: Test purge files and tags
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with files, tags, hosts, and prefixes
+        id: action
+        env:
+          NATHANVAUGHN_TESTING: "1"
+        uses: .
+        with:
+          cf_zone: "test-zone-id-12345"
+          cf_auth: "test-auth-key-abcdef"
+          files: "https://example.com/style.css https://example.com/app.js"
+          tags: "tag1 tag2"
+          hosts: "example.com"
+          prefixes: "/assets/ /images/"
+      - name: Assert action completed successfully
+        run: |
+          echo "PASS: action completed without error (purge files/tags/hosts/prefixes scenario)"

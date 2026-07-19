@@ -1,0 +1,29 @@
+name: Test purge with tags, hosts, and prefixes
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      NATHANVAUGHN_TESTING: "1"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with tags, hosts, and prefixes
+        id: action
+        uses: .
+        with:
+          cf_zone: test-zone-id-12345
+          cf_auth: test-auth-key-abcde
+          tags: |
+            tag1
+            tag2
+          hosts: |
+            example.com
+            www.example.com
+          prefixes: |
+            /api/
+            /static/
+      - name: Assert action completed
+        run: |
+          echo "Action completed successfully with tags, hosts, and prefixes"
+          echo "PASS"

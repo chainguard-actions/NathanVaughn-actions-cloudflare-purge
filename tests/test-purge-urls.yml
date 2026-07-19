@@ -1,0 +1,20 @@
+name: Test purge specific URLs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with specific URLs to purge
+        id: action
+        env:
+          NATHANVAUGHN_TESTING: "1"
+        uses: .
+        with:
+          cf_zone: "test-zone-id-12345"
+          cf_auth: "test-auth-key-abcdef"
+          urls: "https://example.com/page1 https://example.com/page2"
+      - name: Assert action completed successfully
+        run: |
+          echo "PASS: action completed without error (purge URLs scenario)"
