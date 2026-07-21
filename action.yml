@@ -1,0 +1,58 @@
+name: "Cloudflare Cache Purge Action"
+description: "A GitHub Action to purge Cloudflare's cache of your site"
+author: "Nathan Vaughn"
+inputs:
+    cf_zone:
+        description: "Cloudflare Zone"
+        required: false
+    cf_auth:
+        description: "Cloudflare Authentication Key"
+        required: false
+    urls:
+        description: "URLs to purge"
+        required: false
+    files:
+        description: "Files to purge"
+        required: false
+    tags:
+        description: "Cache-Tags to purge"
+        required: false
+    hosts:
+        description: "Hosts to purge"
+        required: false
+    prefixes:
+        description: "Prefixes to purge"
+        required: false
+    python:
+        description: "Python interpreter to use"
+        required: false
+        default: python
+
+branding:
+    icon: "cloud"
+    color: "orange"
+
+runs:
+    using: composite
+    steps:
+      - name: "Purge Cloudflare Cache"
+        shell: bash
+        env:
+          INPUT_PYTHON: ${{ inputs.python }}
+          ACTION_PATH: ${{ github.action_path }}
+          CF_ZONE: ${{ inputs.cf_zone }}
+          CF_AUTH: ${{ inputs.cf_auth }}
+          URLS: ${{ inputs.urls }}
+          FILES: ${{ inputs.files }}
+          TAGS: ${{ inputs.tags }}
+          HOSTS: ${{ inputs.hosts }}
+          PREFIXES: ${{ inputs.prefixes }}
+        run: |
+          "$INPUT_PYTHON" "$ACTION_PATH/main.py" \
+            ${CF_ZONE:+--cf-zone="$CF_ZONE"} \
+            ${CF_AUTH:+--cf-auth="$CF_AUTH"} \
+            ${URLS:+--urls "$URLS"} \
+            ${FILES:+--files "$FILES"} \
+            ${TAGS:+--tags "$TAGS"} \
+            ${HOSTS:+--hosts "$HOSTS"} \
+            ${PREFIXES:+--prefixes "$PREFIXES"}
