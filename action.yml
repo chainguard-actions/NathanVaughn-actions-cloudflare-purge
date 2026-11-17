@@ -48,11 +48,4 @@ runs:
           HOSTS: ${{ inputs.hosts }}
           PREFIXES: ${{ inputs.prefixes }}
         run: |
-          "$INPUT_PYTHON" "$ACTION_PATH/main.py" \
-            ${CF_ZONE:+--cf-zone="$CF_ZONE"} \
-            ${CF_AUTH:+--cf-auth="$CF_AUTH"} \
-            ${URLS:+--urls "$URLS"} \
-            ${FILES:+--files "$FILES"} \
-            ${TAGS:+--tags "$TAGS"} \
-            ${HOSTS:+--hosts "$HOSTS"} \
-            ${PREFIXES:+--prefixes "$PREFIXES"}
+          "$INPUT_PYTHON" "$ACTION_PATH/main.py" --cf-zone="$CF_ZONE" --cf-auth="$CF_AUTH" --urls "$URLS" --files "$FILES" --tags "$TAGS" --hosts "$HOSTS" --prefixes "$PREFIXES"
